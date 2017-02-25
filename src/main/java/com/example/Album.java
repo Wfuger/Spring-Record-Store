@@ -1,5 +1,6 @@
+package com.example;
+
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,17 +12,13 @@ import java.util.Date;
  * Created by willfuger on 2/25/17.
  */
 
-public interface AlbumRepository extends CrudRepository<Album, Long> {
-
-}
-
 @Entity
 public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    private Date releaseDate;
+    private String releaseDate;
     private String artist;
     private String[] songs;
 
@@ -33,7 +30,7 @@ public class Album {
         return name;
     }
 
-    public Date getReleaseDate() {
+    public String getReleaseDate() {
         return releaseDate;
     }
 
@@ -53,7 +50,7 @@ public class Album {
         this.name = name;
     }
 
-    public void setReleaseDate(Date releaseDate) {
+    public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
 
@@ -67,25 +64,3 @@ public class Album {
 }
 
 
-@RestController
-@RequestMapping("/albums")
-public class AlbumController {
-
-    private final AlbumRepository repository;
-
-    public AlbumController(AlbumRepository repository) {
-        this.repository = repository;
-    }
-
-    @GetMapping("")
-    public Iterable<Album> findAll() {
-        return this.repository.findAll();
-    }
-
-
-    @PostMapping("")
-    public Album saveAlbum(@RequestBody Album album) {
-        this.repository.save(album);
-        return album;
-    }
-}
